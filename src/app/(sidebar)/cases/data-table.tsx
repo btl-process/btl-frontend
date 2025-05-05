@@ -32,6 +32,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { columnsDictionary } from "@/constants/columns.constants";
 import { DataTablePagination } from "@/components/data-table-pagination";
+import BtnCreateCase from "@/components/btn-create-case";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -118,6 +119,8 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <BtnCreateCase />
       </div>
       <div className="rounded-md border">
         <Table>
