@@ -299,7 +299,7 @@ export default function StepOne(
           <Button
             type="button"
             onClick={nextStep}
-            className="bg-black hover:bg-black/90 text-white mt-2"
+            className="bg-black hover:bg-black/90 text-white mt-2 hover:cursor-pointer"
           >
             Siguiente
           </Button>

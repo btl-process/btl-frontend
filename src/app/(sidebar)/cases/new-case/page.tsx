@@ -7,7 +7,7 @@ import StepOne from "@/components/add-case/step-one";
 import StepTwo from "@/components/add-case/step-two";
 import StepThree from "@/components/add-case/step-three";
 
-const steps = ["Completar caso", "Anexar evidencias", "Previsualizar caso"];
+const steps = ["Añadir información", "Anexar evidencias", "Previsualizar caso"];
 
 export default function NewCasePage() {
   const searchParams = useSearchParams();
@@ -47,7 +47,7 @@ export default function NewCasePage() {
                   className={`w-8 h-8 flex items-center justify-center rounded-full border-2
                   ${
                     isCompleted
-                      ? "bg-green-500 border-green-500 text-white"
+                      ? "bg-green-700 border-green-700 text-white"
                       : isActive
                       ? "bg-[#182A76] border-[#182A76] text-white"
                       : "border-gray-300 text-gray-500"
