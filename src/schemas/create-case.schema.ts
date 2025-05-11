@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const createCaseSchema = z.object({
     caseType: z.enum([
-        "RCE-DAÑOS",
+        "RCE-DANOS",
         "RCE-HURTO",
     ], {
         required_error: "El tipo de caso es obligatorio",

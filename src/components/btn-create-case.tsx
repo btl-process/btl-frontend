@@ -69,7 +69,7 @@ export default function BtnCreateCase({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="RCE-DAÑOS">
+                      <SelectItem value="RCE-DANOS">
                         Reclamación RCE Daños
                       </SelectItem>
                       <SelectItem value="RCE-HURTO">
