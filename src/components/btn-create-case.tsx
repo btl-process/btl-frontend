@@ -91,12 +91,14 @@ export default function BtnCreateCase({
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button
-                type="submit"
-                className="bg-[#182A76] hover:bg-[#182A76]/90 hover:cursor-pointer"
-              >
-                Confirmar
-              </Button>
+              <DialogClose asChild>
+                <Button
+                  type="submit"
+                  className="bg-[#182A76] hover:bg-[#182A76]/90 hover:cursor-pointer"
+                >
+                  Confirmar
+                </Button>
+              </DialogClose>
             </div>
           </form>
         </Form>

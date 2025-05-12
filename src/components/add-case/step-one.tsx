@@ -15,6 +15,8 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Tiptap from "@/components/tiptap-editor";
 import { Input } from "../ui/input";
+import { useCaseFormStore } from "@/hooks/use-case-form-store";
+import { useEffect } from "react";
 
 export default function StepOne(
     {
@@ -29,11 +31,29 @@ export default function StepOne(
         nextStep: () => void;
     }
 ) {
+  // Connect to Zustand store
+  const { updateFormData, formData } = useCaseFormStore();
+
+  // Modified onSubmit handler to save to Zustand store
+  const handleSubmit = (data: TypeOf<typeof fieldsCaseSchema>) => {
+    updateFormData(data);
+    onSubmit(data);
+  };
+
+  // Pre-fill form with data from store when component mounts
+  useEffect(() => {
+    if (Object.keys(formData).length > 0) {
+      Object.entries(formData).forEach(([key, value]) => {
+        form.setValue(key as keyof TypeOf<typeof fieldsCaseSchema>, value);
+      });
+    }
+  }, [form, formData]);
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(handleSubmit)}
           className="space-y-6 col-span-1 md:col-span-1"
         >
           <h2 className="font-semibold text-2xl">Campos requeridos</h2>

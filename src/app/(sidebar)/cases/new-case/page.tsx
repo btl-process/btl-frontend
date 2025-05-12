@@ -2,18 +2,25 @@
 
 import { useSearchParams } from "next/navigation";
 import { useFieldsCaseForm } from "@/hooks/use-fields-case-form";
-import { useState } from "react";
 import StepOne from "@/components/add-case/step-one";
 import StepTwo from "@/components/add-case/step-two";
 import StepThree from "@/components/add-case/step-three";
+import { useCaseFormStore } from "@/hooks/use-case-form-store";
 
 const steps = ["Añadir información", "Anexar evidencias", "Previsualizar caso"];
 
 export default function NewCasePage() {
   const searchParams = useSearchParams();
   const caseType = searchParams.get("caseType");
+  
+  // Zustand store
+  const { 
+    step, 
+    nextStep, 
+    prevStep, 
+  } = useCaseFormStore();
+  
   const { form, onSubmit } = useFieldsCaseForm();
-  const [step, setStep] = useState(1);
 
   if (!caseType || !["RCE-DANOS", "RCE-HURTO"].includes(caseType)) {
     return (
@@ -26,9 +33,6 @@ export default function NewCasePage() {
       </div>
     );
   }
-
-  const nextStep = () => setStep((s) => Math.min(s + 1, 3));
-  const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
   return (
     <div className="flex flex-1 flex-col px-4 py-6 gap-6">
