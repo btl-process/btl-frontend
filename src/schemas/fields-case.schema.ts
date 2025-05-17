@@ -18,3 +18,20 @@ export const fieldsCaseSchema = z.object({
     amount: z.number().min(1, { message: "El monto es obligatorio" }),
     insurancePolicy: z.string().min(1, { message: "La póliza de seguro es obligatoria" }),
 })
+
+// export const fieldsCaseSchema = z.object({
+//     name: z.string(),
+//     nit: z.string(),
+//     mail: z.string(),
+//     accidentDate: z.string(),
+//     accidentPlace: z.string(),
+//     cityAndDepartment: z.string(),
+//     numberPlateFirstInvolved: z.string(),
+//     nameFirstInvolved: z.string(),
+//     numberPlateSecondInvolved: z.string().optional(),
+//     nameSecondInvolved: z.string().optional(),
+//     driverVehicle: z.string(),
+//     idDriverVehicle: z.string(),
+//     amount: z.number(),
+//     insurancePolicy: z.string(),
+// });

@@ -1,5 +1,12 @@
 import { UseFormReturn } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { fieldsCaseSchema } from "@/schemas/fields-case.schema";
 import { TypeOf } from "zod";
 import { Button } from "../ui/button";
@@ -16,35 +23,38 @@ import { es } from "date-fns/locale";
 import Tiptap from "@/components/tiptap-editor";
 import { Input } from "../ui/input";
 import { useCaseFormStore } from "@/hooks/use-case-form-store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export default function StepOne(
-    {
-        form,
-        onSubmit,
-        caseType,
-        nextStep,
-        }: {
-        form: UseFormReturn<TypeOf<typeof fieldsCaseSchema>>;
-        onSubmit: (data: TypeOf<typeof fieldsCaseSchema>) => void;
-        caseType: string;
-        nextStep: () => void;
-    }
-) {
+export default function StepOne({
+  form,
+  onSubmit,
+  caseType,
+  nextStep,
+}: {
+  form: UseFormReturn<TypeOf<typeof fieldsCaseSchema>>;
+  onSubmit: (data: TypeOf<typeof fieldsCaseSchema>) => void;
+  caseType: string;
+  nextStep: () => void;
+}) {
   // Connect to Zustand store
   const { updateFormData, formData } = useCaseFormStore();
+  // State to trigger Tiptap refresh
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   // Modified onSubmit handler to save to Zustand store
   const handleSubmit = (data: TypeOf<typeof fieldsCaseSchema>) => {
     updateFormData(data);
-    onSubmit(data);
+    setFormSubmitted(true); // Trigger Tiptap to refresh
+    onSubmit(data);  
   };
 
   // Pre-fill form with data from store when component mounts
   useEffect(() => {
     if (Object.keys(formData).length > 0) {
       Object.entries(formData).forEach(([key, value]) => {
-        form.setValue(key as keyof TypeOf<typeof fieldsCaseSchema>, value);
+        if (value !== undefined) {
+          form.setValue(key as keyof TypeOf<typeof fieldsCaseSchema>, value);
+        }
       });
     }
   }, [form, formData]);
@@ -65,11 +75,7 @@ export default function StepOne(
                 <FormItem className="w-full">
                   <FormLabel>Nombre o Razón Social</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="ej: Juan S.A.S."
-                      type="text"
-                      {...field}
-                    />
+                    <Input placeholder="Juan S.A.S." type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -135,7 +141,7 @@ export default function StepOne(
                     <Calendar
                       locale={es}
                       mode="single"
-                      selected={field.value}
+                      selected={new Date(field.value)}
                       onSelect={field.onChange}
                       disabled={(date) =>
                         date > new Date() || date < new Date("1900-01-01")
@@ -282,7 +288,12 @@ export default function StepOne(
               <FormItem>
                 <FormLabel>Cuantías</FormLabel>
                 <FormControl>
-                  <Input placeholder="1000000" type="number" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="1000000"
+                    value={field.value}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -314,7 +325,12 @@ export default function StepOne(
 
       <div className="sticky top-0 col-span-2 h-[500px]">
         <h2 className="font-semibold text-2xl mb-2">Editor</h2>
-        <Tiptap caseType={caseType} />
+        <Tiptap
+          caseType={caseType}
+          formData={formData}
+          formSubmitted={formSubmitted}
+          resetFormSubmitted={() => setFormSubmitted(false)}
+        />
         <div className="flex gap-4 justify-end">
           <Button
             type="button"
